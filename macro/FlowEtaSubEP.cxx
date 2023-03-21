@@ -103,8 +103,6 @@ void FlowEtaSubEP::Init(){
     }
   }
 
-  double binCent[9] = {-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,8.5};
-
   if(fCalFlow){
     fNameInFile.push_back( Form("tp_SqRes%iTPC%i%s", fNHarmonic, (int)(fEtaGap*100), fNameSys.Data()) );
     tp_SqRes = new TProfile(Form("tp_SqRes%iTPC%i%s_Run%i", fNHarmonic, (int)(fEtaGap*100), fNameSys.Data(), fRunId),Form("Resolution^{2} for v_{%i}, |#eta|>%.2f;cent bin;Res^{2}",fNHarmonic,fEtaGap),fNCentBins, -0.5, fNCentBins-0.5);

@@ -131,7 +131,7 @@ void FemtoDstAnalyzer_New(const Char_t *inFile = "st_physics_12150008_raw_403000
   Bool_t mode_flow = false;
   Bool_t CalFlow = false;
   Bool_t CheckHistoQvectorAndPsi = false;
-  Bool_t CalEPFromTPC = true;
+  Bool_t CalEPFromTPC = false;
   Bool_t CalEPFromEPD = false;
 
   if( strncmp(mode, "raw",3) == 0){
@@ -144,10 +144,15 @@ void FemtoDstAnalyzer_New(const Char_t *inFile = "st_physics_12150008_raw_403000
     CalFlow = true;
   }
 
-  GetVectorRunId(inFile,vRunId);
-  for(Int_t i=0; i<(int)vRunId.size();i++){
-    mRunId.insert(std::make_pair( vRunId[i], i));
-    std::cout<<vRunId[i]<<"\t map"<<mRunId.at(vRunId[i])<<"\n";
+  if(NotSortedByRunId==false){
+    GetVectorRunId(inFile,vRunId);
+    for(Int_t i=0; i<(int)vRunId.size();i++){
+      mRunId.insert(std::make_pair( vRunId[i], i));
+      std::cout<<vRunId[i]<<"\t map"<<mRunId.at(vRunId[i])<<"\n";
+    }
+  }else{
+    vRunId.push_back(0);
+    mRunId.insert(std::make_pair( 0, 0));
   }
 
   flowEtaSub.resize(Nharm);
@@ -229,6 +234,11 @@ void FemtoDstAnalyzer_New(const Char_t *inFile = "st_physics_12150008_raw_403000
     if( !TofMatchedCut(dst, event, 4, energy) ) continue;
 
     Int_t RunID = event -> runId();
+    Int_t array_RunID = 0;
+    if(NotSortedByRunId==false){
+      array_RunID=mRunId.at(RunID);
+    }
+    
     Int_t cent=0; 
     if( nBinCent == 9 ){
       cent = event -> cent9();
@@ -238,8 +248,8 @@ void FemtoDstAnalyzer_New(const Char_t *inFile = "st_physics_12150008_raw_403000
     }
 
     for(Int_t iharm=0; iharm<Nharm; iharm++){
-      flowEtaSub[iharm][mRunId.at(RunID)]->Zero();
-      flowSP[iharm][mRunId.at(RunID)]->Zero();
+      flowEtaSub[iharm][array_RunID]->Zero();
+      flowSP[iharm][array_RunID]->Zero();
     }
 
     // Track analysis
@@ -256,9 +266,9 @@ void FemtoDstAnalyzer_New(const Char_t *inFile = "st_physics_12150008_raw_403000
         //if(iEvent==1001)std::cout<<femtoTrack -> eta()<<"\t"<<femtoTrack -> phi()<<"\t"<<femtoTrack -> pt()<<std::endl;
 
         for(Int_t iharm=0; iharm<Nharm; iharm++){
-          //flowEtaSub[iharm][mRunId.at(RunID)]->ProcessFirstTrackLoop(femtoTrack->eta(),femtoTrack->phi(),GetWeight(femtoTrack));
-          flowEtaSub[iharm][mRunId.at(RunID)]->ProcessFirstTrackLoop(femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt());
-          flowSP[iharm][mRunId.at(RunID)]    ->ProcessFirstTrackLoop(femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt());
+          //flowEtaSub[iharm][array_RunID]->ProcessFirstTrackLoop(femtoTrack->eta(),femtoTrack->phi(),GetWeight(femtoTrack));
+          flowEtaSub[iharm][array_RunID]->ProcessFirstTrackLoop(femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt());
+          flowSP[iharm][array_RunID]    ->ProcessFirstTrackLoop(femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt());
         }
 
       } //for(Int_t iTrk=0; iTrk<nTracks; iTrk++)
@@ -285,9 +295,9 @@ void FemtoDstAnalyzer_New(const Char_t *inFile = "st_physics_12150008_raw_403000
         if (!(TMath::Abs(RandomEta)>0)||(TMath::Abs(RandomEta)>5.0) || (TMath::Abs(RandomEta)<2.1)) continue;
         //std::cout<<ew<<"\t"<<RandomEta<<"\t"<<RandomPhi<<"\t"<<nMip<<std::endl;
         for(Int_t iharm=0; iharm<Nharm; iharm++){
-          //flowEtaSub[iharm][mRunId.at(RunID)]->ProcessFirstTrackLoop(femtoTrack->eta(),femtoTrack->phi(),GetWeight(femtoTrack));
-          flowEtaSub[iharm][mRunId.at(RunID)]->ProcessFirstTrackLoop(RandomEta,RandomPhi,nMip);
-          flowSP[iharm][mRunId.at(RunID)]->ProcessFirstTrackLoop(RandomEta,RandomPhi,nMip);
+          //flowEtaSub[iharm][array_RunID]->ProcessFirstTrackLoop(femtoTrack->eta(),femtoTrack->phi(),GetWeight(femtoTrack));
+          flowEtaSub[iharm][array_RunID]->ProcessFirstTrackLoop(RandomEta,RandomPhi,nMip);
+          flowSP[iharm][array_RunID]->ProcessFirstTrackLoop(RandomEta,RandomPhi,nMip);
         }
       
       }
@@ -295,8 +305,8 @@ void FemtoDstAnalyzer_New(const Char_t *inFile = "st_physics_12150008_raw_403000
     }// EPD EP Determ
 
     for(Int_t iharm=0; iharm<Nharm; iharm++){
-      flowEtaSub[iharm][mRunId.at(RunID)]->ProcessEventAfterFirstTrackLoop((Double_t)cent,(event->primaryVertex()).Z());
-      flowSP[iharm][mRunId.at(RunID)]->ProcessEventAfterFirstTrackLoop((Double_t)cent,(event->primaryVertex()).Z());
+      flowEtaSub[iharm][array_RunID]->ProcessEventAfterFirstTrackLoop((Double_t)cent,(event->primaryVertex()).Z());
+      flowSP[iharm][array_RunID]->ProcessEventAfterFirstTrackLoop((Double_t)cent,(event->primaryVertex()).Z());
     }
 
     if(CalFlow==true){
@@ -316,13 +326,13 @@ void FemtoDstAnalyzer_New(const Char_t *inFile = "st_physics_12150008_raw_403000
         if(  parTPCandTOF < 0 || parHadrons < 0) continue;
 
         for(Int_t iharm=0; iharm<Nharm; iharm++){
-          flowEtaSub[iharm][mRunId.at(RunID)]->ProcessSecondTrackLoop(femtoTrack->eta(),femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt(),parHadrons,(Double_t)cent);
-          flowEtaSub[iharm][mRunId.at(RunID)]->ProcessSecondTrackLoop(femtoTrack->eta(),femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt(),parTPCandTOF,(Double_t)cent);
-          //flowEtaSub[iharm][mRunId.at(RunID)]->ProcessSecondTrackLoop(GetRapidity2(femtoTrack, parTPCandTOF),femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt(),parTPCandTOF,(Double_t)cent);
+          flowEtaSub[iharm][array_RunID]->ProcessSecondTrackLoop(femtoTrack->eta(),femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt(),parHadrons,(Double_t)cent);
+          flowEtaSub[iharm][array_RunID]->ProcessSecondTrackLoop(femtoTrack->eta(),femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt(),parTPCandTOF,(Double_t)cent);
+          //flowEtaSub[iharm][array_RunID]->ProcessSecondTrackLoop(GetRapidity2(femtoTrack, parTPCandTOF),femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt(),parTPCandTOF,(Double_t)cent);
 
-          flowSP[iharm][mRunId.at(RunID)]->ProcessSecondTrackLoop(femtoTrack->eta(),femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt(),parHadrons,(Double_t)cent);
-          flowSP[iharm][mRunId.at(RunID)]->ProcessSecondTrackLoop(femtoTrack->eta(),femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt(),parTPCandTOF,(Double_t)cent);
-          //flowSP[iharm][mRunId.at(RunID)]->ProcessSecondTrackLoop(GetRapidity2(femtoTrack, parTPCandTOF),femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt(),parTPCandTOF,(Double_t)cent);
+          flowSP[iharm][array_RunID]->ProcessSecondTrackLoop(femtoTrack->eta(),femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt(),parHadrons,(Double_t)cent);
+          flowSP[iharm][array_RunID]->ProcessSecondTrackLoop(femtoTrack->eta(),femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt(),parTPCandTOF,(Double_t)cent);
+          //flowSP[iharm][array_RunID]->ProcessSecondTrackLoop(GetRapidity2(femtoTrack, parTPCandTOF),femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt(),parTPCandTOF,(Double_t)cent);
 
         }
 

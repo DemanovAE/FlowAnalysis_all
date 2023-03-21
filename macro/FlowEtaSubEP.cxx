@@ -26,7 +26,6 @@ FlowEtaSubEP::FlowEtaSubEP() :
   fVn(0.),
   fQvector_E(nullptr),
   fQvector_W(nullptr),
-  h_VtxZ(nullptr),
   tp2_QxE(nullptr),
   tp2_QxW(nullptr),
   tp2_QyE(nullptr),
@@ -52,11 +51,7 @@ FlowEtaSubEP::FlowEtaSubEP() :
   tp2_MeanPt(),
   tp_VnCent(),
   tp2_VnPtCent(),
-  tp3_VnPtCentRapidity(),
-  tp_VnCent1(),
-  tp2_VnPtCent1(),
-  tp_VnCent2(),
-  tp2_VnPtCent2()
+  tp3_VnPtCentRapidity()
 {
 }
 
@@ -85,8 +80,6 @@ void FlowEtaSubEP::Init(){
   fQvector_E = new QVector(fNHarmonic);
   fQvector_W = new QVector(fNHarmonic);
 
-  h_VtxZ = new TH1D();//(Form("h_VtxZ%iEta%i%s_Run%i", fNHarmonic, (int)(fEtaGap*100), fNameSys.Data(), fRunId),"", fNBinsVtxZ, -1.*fVtxZ, 1.*fVtxZ);
-
   if(fFirstRun){
     tp2_QxE = new TProfile2D(Form("tp2_Qx%iEastEta%i%s_Run%i", fNHarmonic, (int)(fEtaGap*100), fNameSys.Data(), fRunId),Form("RunId=%i, <Q_{x}> for #psi_{%i} East, |#eta|>%.2f ;VtxZ;cent", fRunId,fNHarmonic,fEtaGap), fNBinsVtxZ, -1.*fVtxZ, 1.*fVtxZ, fNCentBins, -0.5, fNCentBins-0.5);
     tp2_QxW = new TProfile2D(Form("tp2_Qx%iWestEta%i%s_Run%i", fNHarmonic, (int)(fEtaGap*100), fNameSys.Data(), fRunId),Form("RunId=%i, <Q_{x}> for #psi_{%i} West, |#eta|>%.2f ;VtxZ;cent", fRunId,fNHarmonic,fEtaGap), fNBinsVtxZ, -1.*fVtxZ, 1.*fVtxZ, fNCentBins, -0.5, fNCentBins-0.5);
@@ -104,28 +97,12 @@ void FlowEtaSubEP::Init(){
   }
 
   if(fCalFlow){
-    fNameInFile.push_back( Form("tp_SqRes%iTPC%i%s", fNHarmonic, (int)(fEtaGap*100), fNameSys.Data()) );
     tp_SqRes = new TProfile(Form("tp_SqRes%iTPC%i%s_Run%i", fNHarmonic, (int)(fEtaGap*100), fNameSys.Data(), fRunId),Form("Resolution^{2} for v_{%i}, |#eta|>%.2f;cent bin;Res^{2}",fNHarmonic,fEtaGap),fNCentBins, -0.5, fNCentBins-0.5);
     for(Int_t i=0; i<(int)fPidCode.size(); i++){
       tp2_MeanPt.push_back(   new TProfile2D(Form("tp2_meanPtV%i%sEta%iTPCandTOF%s_Run%i", fNHarmonic, (fPidCode.at(i)).Data(), (int)(fEtaGap*100), fNameSys.Data(), fRunId),Form("%s, <p_{T}> for bins, v_{%i}, |#eta|>%.2f;p_{T} [GeV/c]; cent bin", (fPidCode.at(i)).Data(), fNHarmonic, fEtaGap), 100, 0.15, 5.15, fNCentBins, -0.5, fNCentBins-0.5));
       tp_VnCent.push_back(    new TProfile(Form("tp_v%iewTPC%sEta%iTPCandTOF%s_Run%i", fNHarmonic, (fPidCode.at(i)).Data(), (int)(fEtaGap*100), fNameSys.Data(), fRunId),Form("%s v_{%i}(cent), |#eta|>%.2f;cent bin; v_{%i}", (fPidCode.at(i)).Data(), fNHarmonic, fEtaGap, fNHarmonic), fNCentBins, -0.5, fNCentBins-0.5));
       tp2_VnPtCent.push_back( new TProfile2D(Form("tp2_v%iewTPC%sEta%iTPCandTOF%s_Run%i", fNHarmonic, (fPidCode.at(i)).Data(), (int)(fEtaGap*100), fNameSys.Data(), fRunId),Form("%s v_{%i}(p_{T}, cent), |#eta|>%.2f;p_{T} [GeV/c];cent bin", (fPidCode.at(i)).Data(), fNHarmonic, fEtaGap), 100, 0.15, 5.15, fNCentBins, -0.5, fNCentBins-0.5));
       tp3_VnPtCentRapidity.push_back( new TProfile3D(Form("tp3_v%iewTPC%sEta%iTPCandTOF%s_Run%i", fNHarmonic, (fPidCode.at(i)).Data(), (int)(fEtaGap*100), fNameSys.Data(), fRunId),Form("%s v_{%i}(p_{T}, cent, #eta), |#eta|>%.2f;p_{T},[GeV/c];cent,%%; #eta", (fPidCode.at(i)).Data(), fNHarmonic, fEtaGap), 100, 0.15, 5.15, fNCentBins, -0.5, fNCentBins-0.5, 100, -1.,1.0));
-
-      tp_VnCent1.push_back(    new TProfile(Form("tp_v%iewTPC%sEta%iTPCandTOF%s1_Run%i", fNHarmonic, (fPidCode.at(i)).Data(), (int)(fEtaGap*100), fNameSys.Data(), fRunId),Form("%s v_{%i}(cent), |#eta|>%.2f;cent bin; v_{%i}", (fPidCode.at(i)).Data(), fNHarmonic, fEtaGap, fNHarmonic), fNCentBins, -0.5, fNCentBins-0.5));
-      tp_VnCent2.push_back(    new TProfile(Form("tp_v%iewTPC%sEta%iTPCandTOF%s2_Run%i", fNHarmonic, (fPidCode.at(i)).Data(), (int)(fEtaGap*100), fNameSys.Data(), fRunId),Form("%s v_{%i}(cent), |#eta|>%.2f;cent bin; v_{%i}", (fPidCode.at(i)).Data(), fNHarmonic, fEtaGap, fNHarmonic), fNCentBins, -0.5, fNCentBins-0.5));
-      tp2_VnPtCent1.push_back( new TProfile2D(Form("tp2_v%iewTPC%sEta%iTPCandTOF%s1_Run%i", fNHarmonic, (fPidCode.at(i)).Data(), (int)(fEtaGap*100), fNameSys.Data(), fRunId),Form("%s v_{%i}(p_{T}, cent), |#eta|>%.2f;p_{T} [GeV/c];cent bin", (fPidCode.at(i)).Data(), fNHarmonic, fEtaGap), 100, 0.15, 5.15, fNCentBins, -0.5, fNCentBins-0.5));
-      tp2_VnPtCent2.push_back( new TProfile2D(Form("tp2_v%iewTPC%sEta%iTPCandTOF%s2_Run%i", fNHarmonic, (fPidCode.at(i)).Data(), (int)(fEtaGap*100), fNameSys.Data(), fRunId),Form("%s v_{%i}(p_{T}, cent), |#eta|>%.2f;p_{T} [GeV/c];cent bin", (fPidCode.at(i)).Data(), fNHarmonic, fEtaGap), 100, 0.15, 5.15, fNCentBins, -0.5, fNCentBins-0.5));
-      
-      fNameInFile.push_back( Form("tp2_meanPtV%i%sEta%iTPCandTOF%s", fNHarmonic, (fPidCode.at(i)).Data(), (int)(fEtaGap*100), fNameSys.Data()) );  
-      fNameInFile.push_back( Form("tp_v%iewTPC%sEta%iTPCandTOF%s", fNHarmonic, (fPidCode.at(i)).Data(), (int)(fEtaGap*100), fNameSys.Data()) );  
-      fNameInFile.push_back( Form("tp_v%iewTPC%sEta%iTPCandTOF%s1", fNHarmonic, (fPidCode.at(i)).Data(), (int)(fEtaGap*100), fNameSys.Data()) );  
-      fNameInFile.push_back( Form("tp_v%iewTPC%sEta%iTPCandTOF%s2", fNHarmonic, (fPidCode.at(i)).Data(), (int)(fEtaGap*100), fNameSys.Data()) );  
-      fNameInFile.push_back( Form("tp2_v%iewTPC%sEta%iTPCandTOF%s", fNHarmonic, (fPidCode.at(i)).Data(), (int)(fEtaGap*100), fNameSys.Data()) );  
-      fNameInFile.push_back( Form("tp3_v%iewTPC%sEta%iTPCandTOF%s", fNHarmonic, (fPidCode.at(i)).Data(), (int)(fEtaGap*100), fNameSys.Data()) );  
-      fNameInFile.push_back( Form("tp2_v%iewTPC%sEta%iTPCandTOF%s1", fNHarmonic, (fPidCode.at(i)).Data(), (int)(fEtaGap*100), fNameSys.Data()) );  
-      fNameInFile.push_back( Form("tp2_v%iewTPC%sEta%iTPCandTOF%s2", fNHarmonic, (fPidCode.at(i)).Data(), (int)(fEtaGap*100), fNameSys.Data()) );  
- 
     }
   }
 
@@ -220,13 +197,6 @@ void FlowEtaSubEP::ProcessSecondTrackLoop(const Double_t &rapidity, const Double
     tp_VnCent[pid]   ->Fill(dCent,VnEtaSubEventPlane);
     tp2_VnPtCent[pid]->Fill(pt,dCent,VnEtaSubEventPlane);
     tp3_VnPtCentRapidity[pid]->Fill(pt,dCent,rapidity,VnEtaSubEventPlane);
-
-    tp_VnCent1[pid]   ->Fill(dCent,TMath::Cos( ((fKHarmonicThroughNHarmonic) ? fKHarmonic : fNHarmonic) * (phi - fPsi_W) ));
-    tp2_VnPtCent1[pid]->Fill(pt,dCent,TMath::Cos( ((fKHarmonicThroughNHarmonic) ? fKHarmonic : fNHarmonic) * (phi - fPsi_W) ));
-
-    tp_VnCent2[pid]   ->Fill(dCent,TMath::Cos( ((fKHarmonicThroughNHarmonic) ? fKHarmonic : fNHarmonic) * (phi - fPsi_E) ));
-    tp2_VnPtCent2[pid]->Fill(pt,dCent,TMath::Cos( ((fKHarmonicThroughNHarmonic) ? fKHarmonic : fNHarmonic) * (phi - fPsi_E) ));
-
   }
 }
 
@@ -279,7 +249,6 @@ void FlowEtaSubEP::ProcessEventAfterFirstTrackLoop(const Double_t &dCent, const 
       h2_QWest[(int)dCent] ->Fill(fQvector_W->X(),fQvector_W->Y());
       h_PsiEast[(int)dCent]->Fill(fPsi_E);
       h_PsiWest[(int)dCent]->Fill(fPsi_W);
-      //[h_VtxZ->FindBin(dVtxZ) - 1]
     }
   }
 }
@@ -300,16 +269,18 @@ void FlowEtaSubEP::WtiteHist(){
     }
   }
   if(fCalFlow){
-    tp_SqRes->Write(); 
+    tp_SqRes->Write();
+    fNameInFile.push_back(tp_SqRes->GetName());
     for(Int_t i=0; i<(int)fPidCode.size(); i++){
       tp2_MeanPt[i]   ->Write();
       tp_VnCent[i]    ->Write();
       tp2_VnPtCent[i] ->Write();
       tp3_VnPtCentRapidity[i] ->Write();
-      tp_VnCent1[i]   ->Write();
-      tp2_VnPtCent1[i]->Write();
-      tp_VnCent2[i]   ->Write();
-      tp2_VnPtCent2[i]->Write();
+      
+      fNameInFile.push_back(tp2_MeanPt[i]           ->GetName());
+      fNameInFile.push_back(tp_VnCent[i]            ->GetName());
+      fNameInFile.push_back(tp2_VnPtCent[i]         ->GetName());
+      fNameInFile.push_back(tp3_VnPtCentRapidity[i] ->GetName());
     }
   }
   /*

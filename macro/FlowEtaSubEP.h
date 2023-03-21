@@ -86,7 +86,6 @@ private:
   Double_t fVn;
   QVector *fQvector_E;
   QVector *fQvector_W;
-  TH1D *h_VtxZ;
   TProfile2D *tp2_QxE;
   TProfile2D *tp2_QxW;
   TProfile2D *tp2_QyE;
@@ -113,12 +112,6 @@ private:
   std::vector<TProfile*> tp_VnCent;
   std::vector<TProfile2D*> tp2_VnPtCent;
   std::vector<TProfile3D*> tp3_VnPtCentRapidity;
-
-  std::vector<TProfile*> tp_VnCent1;
-  std::vector<TProfile2D*> tp2_VnPtCent1;
-
-  std::vector<TProfile*> tp_VnCent2;
-  std::vector<TProfile2D*> tp2_VnPtCent2;
 
   ClassDef(FlowEtaSubEP,0);
 };

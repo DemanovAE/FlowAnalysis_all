@@ -128,7 +128,7 @@ void FemtoDstAnalyzer_New(const Char_t *inFile = "st_physics_12150008_raw_403000
   // Mode works
   Bool_t mode_raw = false;
   Bool_t mode_rec = false;
-  Bool_t CalFlow = false;
+  Bool_t CalFlow = true;
   Bool_t CheckHistoQvectorAndPsi = false;
   Bool_t CalEPFromTPC = true;
   Bool_t CalEPFromEPD = false;

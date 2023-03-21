@@ -93,6 +93,7 @@ void FlowEtaSubEP::Init(){
       tp2_CosPsiEast.push_back(new TProfile2D(Form("tp2_Cos%iPsi%iEastEta%i%s_Run%i", (ifl+1), fNHarmonic, (int)(fEtaGap*100), fNameSys.Data(), fRunId),Form("RunId=%i, <cos(%i*%i#psi_{%i})> East, |#eta|>%.2f ;VtxZ;cent",fRunId,(ifl+1),fNHarmonic,fNHarmonic,fEtaGap),fNBinsVtxZ, -1.*fVtxZ, 1.*fVtxZ, fNCentBins, -0.5, fNCentBins-0.5));
       tp2_SinPsiWest.push_back(new TProfile2D(Form("tp2_Sin%iPsi%iWestEta%i%s_Run%i", (ifl+1), fNHarmonic, (int)(fEtaGap*100), fNameSys.Data(), fRunId),Form("RunId=%i, <sin(%i*%i#psi_{%i})> West, |#eta|>%.2f ;VtxZ;cent",fRunId,(ifl+1),fNHarmonic,fNHarmonic,fEtaGap),fNBinsVtxZ, -1.*fVtxZ, 1.*fVtxZ, fNCentBins, -0.5, fNCentBins-0.5));
       tp2_CosPsiWest.push_back(new TProfile2D(Form("tp2_Cos%iPsi%iWestEta%i%s_Run%i", (ifl+1), fNHarmonic, (int)(fEtaGap*100), fNameSys.Data(), fRunId),Form("RunId=%i, <cos(%i*%i#psi_{%i})> West, |#eta|>%.2f ;VtxZ;cent",fRunId,(ifl+1),fNHarmonic,fNHarmonic,fEtaGap),fNBinsVtxZ, -1.*fVtxZ, 1.*fVtxZ, fNCentBins, -0.5, fNCentBins-0.5));
+    
     }
   }
 

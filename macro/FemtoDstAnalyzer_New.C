@@ -153,6 +153,7 @@ void FemtoDstAnalyzer_New(const Char_t *inFile = "st_physics_12150008_raw_403000
   }else{
     vRunId.push_back(0);
     mRunId.insert(std::make_pair( 0, 0));
+    std::cout<<vRunId[0]<<"\t map"<<mRunId.at(vRunId[0])<<std::endl;
   }
 
   flowEtaSub.resize(Nharm);

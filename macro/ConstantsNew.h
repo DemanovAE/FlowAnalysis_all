@@ -62,7 +62,7 @@ const std::map<const Int_t, Int_t> RunIdMin = {{7, 11110000}, {11, 11145000}, {1
 const std::map<const Int_t, Int_t> RunIdMax = {{7, 11150000}, {11, 11165000}, {14, 15075000}, {19, 12123000}, {27, 12180000}, {28, 19180000}, {39, 11115000}, {62, 11098060}};
 
 //Event cut
-const std::map<const Int_t, Double_t> CutVtxZ = {{7, 70.}, {11, 50.}, {14, 70.}, {19, 70.}, {27, 40.}, {28, 70.}, {39, 40.}, {62, 40.}};
+const std::map<const Int_t, Double_t> CutVtxZ = {{7, 70.}, {11, 50.}, {14, 70.}, {19, 70.}, {27, 70.}, {28, 70.}, {39, 40.}, {62, 40.}};
 const std::map<const Int_t, Double_t> CutVtxR = {{7, 2.}, {11, 2.}, {14, 1.}, {19, 2.}, {27, 2.}, {28, 2.}, {39, 2.}, {62, 2.}};
 const std::map<const Int_t, Double_t> CutDeltaVtxY = {{7, 0.}, {11, 0.}, {14, 0.8847}, {19, 0.}, {27, 0.}, {28, 0.}, {39, 0.}, {62, 0.}};
 

@@ -124,6 +124,7 @@ void FemtoDstAnalyzer_New(const Char_t *inFile = "st_physics_12150008_raw_403000
   outFile->cd();
   // Eta-sub Event Plane
   std::vector<std::vector<FlowEtaSubEP*>> flowEtaSub;
+  std::vector<std::vector<FlowEtaSubEP*>> flowEtaSubEPD;
   std::vector<std::vector<FlowScalarProduct*>> flowSP;
   // Mode works
   Bool_t mode_raw = false;
@@ -263,12 +264,9 @@ void FemtoDstAnalyzer_New(const Char_t *inFile = "st_physics_12150008_raw_403000
 
         if( !isGoodTrackEP(event, femtoTrack, energy) ) continue; 
 
-        //if(iEvent==1001)std::cout<<femtoTrack -> eta()<<"\t"<<femtoTrack -> phi()<<"\t"<<femtoTrack -> pt()<<std::endl;
-
         for(Int_t iharm=0; iharm<Nharm; iharm++){
-          //flowEtaSub[iharm][array_RunID]->ProcessFirstTrackLoop(femtoTrack->eta(),femtoTrack->phi(),GetWeight(femtoTrack));
-          flowEtaSub[iharm][array_RunID]->ProcessFirstTrackLoop(femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt());
-          flowSP[iharm][array_RunID]    ->ProcessFirstTrackLoop(femtoTrack->eta(),femtoTrack->phi(),femtoTrack->pt());
+          flowEtaSub[iharm][array_RunID]->ProcessFirstTrackLoop(femtoTrack->eta(),femtoTrack->phi(),GetWeight(femtoTrack));
+          flowSP[iharm][array_RunID]    ->ProcessFirstTrackLoop(femtoTrack->eta(),femtoTrack->phi(),GetWeight(femtoTrack));
         }
 
       } //for(Int_t iTrk=0; iTrk<nTracks; iTrk++)
@@ -416,7 +414,7 @@ Bool_t isGoodTrackEP(StFemtoEvent *const &event, StFemtoTrack *const &track, con
   if( track -> gMom().Mag() < 0.1) return false; 
   if( track -> gDCA(pVtx).Mag() > CutDCApidEP.at(_energy) ) return false;    
   if( TMath::Abs( track -> eta() ) > 1.0 ) return false; 
-  if( TMath::Abs( track -> eta() ) < 0.05 ) return false; 
+  if( TMath::Abs( track -> eta() ) < EtaGapSubEP ) return false; 
   if( track -> nHits() < CutnHits) return false;
   if( track -> pt() < CutPtotEPMin_PID) return false;
   if( track -> pt() > CutPtotEPMax_PID) return false; 
@@ -438,7 +436,7 @@ Bool_t isGoodTrackFlow(StFemtoEvent *const &event, StFemtoTrack *const &track, c
   if( track -> gMom().Mag() < 0.1) return false; 
   if( track -> gDCA(pVtx).Mag() > CutDCApidEP.at(_energy) ) return false;
   if( TMath::Abs( track -> eta() ) > 1.0 ) return false; 
-  if( TMath::Abs( track -> eta() ) < 0.05 ) return false; 
+  if( TMath::Abs( track -> eta() ) < EtaGapSubEP ) return false; 
   if( track -> nHits() < CutnHits) return false;
   if( track -> pt() < CutPtotEPMin_PID) return false;
   if( track -> pt() > CutPtotFlowMax_PID) return false; 

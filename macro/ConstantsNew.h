@@ -45,7 +45,7 @@ const int Nharm = 2;
 const std::map<Int_t,Int_t> vec_harmonic = {{0,2},{1,3},{2,4},{3,2},{4,2}}; 
 
 const int nBinCent = 9;
-const int nBinVtxZ = 2;
+const int nBinVtxZ = 10;
 
 // eta-gap значения
 const float EtaGapSubEP=0.05;
@@ -213,8 +213,8 @@ const std::map<const Int_t, std::vector<Int_t> > Trigger = {
 /// PID ////
 //const std::vector<Double_t> ptBinRange = {0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4,2.6,2.8,3.2,3.6,4.0,4.4,4.8,5.2};
 //const std::vector<Double_t> ptBinRange = {0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4,2.6,2.8,3.2,3.6,4.0,4.4,4.8,5.2};
-const std::vector<Double_t> ptBinRange = {0.2,0.4,0.6,0.8,1.0,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.4,2.6,2.8,3.0,3.2};
-//const std::vector<Double_t> ptBinRange = {0.2,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4,2.5,2.6,2.8,3.0,3.2};
+//const std::vector<Double_t> ptBinRange = {0.2,0.4,0.6,0.8,1.0,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.4,2.6,2.8,3.0,3.2};
+const std::vector<Double_t> ptBinRange = {0.15,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4,2.5,2.6,2.8,3.0,3.2};
 
 const Double_t ptUpTPC[3] = {0.55,0.45,1.0};
 const Double_t ptDownTPC[3] = {0.2,0.2,0.5};
@@ -232,7 +232,7 @@ const Double_t SqMup2[3] = {0.05, 0.25, 1.10};
 //const Double_t SqMdown2[3] = {-0.15, 0.23, 0.74};
 //const Double_t SqMup2[3] = {0.1, 0.27, 1.20};
 
-const std::map<const Int_t, Double_t> nSigmaTofTpc = {{7, 3.}, {11, 3.}, {14, 3.}, {19, 3.}, {27, 1.5}, {28, 2.}, {39, 3.}, {62, 1.5}};
+const std::map<const Int_t, Double_t> nSigmaTofTpc = {{7, 3.}, {11, 3.}, {14, 3.}, {19, 3.}, {27, 1.}, {28, 2.}, {39, 3.}, {62, 1.5}};
 const std::map<const Int_t, Double_t> nSigmaTpc = {{7, 1.5}, {11, 1.5}, {14, 1.5}, {19, 1.5}, {27, 1.}, {28, 2.}, {39, 1.5}, {62, 0.75}};
 const std::map<const Int_t, Double_t> nSigmaTpcAntSym = {{7, 2.}, {11, 2.}, {14, 2.}, {19, 2.}, {27, 1.}, {28, 2.}, {39, 2.}, {62, 1.}};
 

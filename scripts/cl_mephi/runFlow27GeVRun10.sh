@@ -7,7 +7,7 @@
 #SBATCH -J flow
 #SBATCH --time=12:00:00
 #SBATCH --ntasks=1
-#SBATCH --array=1-2
+#SBATCH -a 1-110%30
 #SBATCH -o /mnt/pool/rhic/1/demanov/cherenkov/NewSTAR/BES/OUT_new/27GeV/sge_out/slurm_%A_%a.out
 #SBATCH -e /mnt/pool/rhic/1/demanov/cherenkov/NewSTAR/BES/OUT_new/27GeV/sge_err/slurm_%A_%a.err
 
